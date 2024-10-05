@@ -10,25 +10,74 @@ st.header("Say hi to Polly!")
 
 # Start displaying the text
 
+#position chat box
+st.markdown("""
+    <style>
+    .chatbox {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 300px;
+        height: 400px;
+        background-color: white;
+        border: 1px solid #ccc;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        overflow-y: auto;  /* Allow scrolling if content exceeds height */
+        z-index: 1000;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-initialText = "Hello Polly! I am the Captain and I am in need of some assistance with me treasure."
+# Chatbox container
+chatbox_container = st.container()
+with chatbox_container:
+    st.markdown('<div class="chatbox">', unsafe_allow_html=True)
+    st.subheader("Chatbot")
+    chat_display = st.empty()  # Placeholder for chatbot messages
+    st.markdown('</div>', unsafe_allow_html=True)
 
-with st.sidebar:
-    st.subheader("Polly")
-    chat_display = st.empty()
+if 'conversation' not in st.session_state:
+    st.session_state.conversation = []
 
-outputText = ""
-for chunk in callPolly(initialText):
-    outputText += chunk.choices[0].delta.content or ""
-    chat_display.markdown(f"<pre>{outputText}</pre>", unsafe_allow_html=True)
+# Sidebar for user input
+user_input = st.sidebar.text_input("You:", "")
 
-while True:
-    user_input = st.text_input("Enter your message to Polly:")
+# Handle user input
+if user_input:
+    # Add user input to the conversation history
+    st.session_state.conversation.append(f"You: {user_input}")
+    
+    # Generate and add chatbot response
+    response = callPolly(user_input)
+    st.session_state.conversation.append(f"Polly: {response}")
 
-    outputText = ""
-    for chunk in callPolly(user_input):
-        outputText += chunk.choices[0].delta.content or ""
-        chat_display.markdown(f"<pre>{outputText}</pre>", unsafe_allow_html=True)
+    # Clear the input box
+    st.sidebar.text_input("You:", "", key="input")  # Reset input field
+
+# Display the conversation history
+chat_display.markdown("\n".join(st.session_state.conversation))
+
+
+# Start displaying the text
+# initialText = "Hello Polly! I am the Captain and I am in need of some assistance with me treasure."
+
+# with st.sidebar:
+#     st.subheader("Polly")
+#     chat_display = st.empty()
+
+# outputText = ""
+# for chunk in callPolly(initialText):
+#     outputText += chunk.choices[0].delta.content or ""
+#     chat_display.markdown(f"<pre>{outputText}</pre>", unsafe_allow_html=True)
+
+# while True:
+#     user_input = st.text_input("Enter your message to Polly:")
+
+#     outputText = ""
+#     for chunk in callPolly(user_input):
+#         outputText += chunk.choices[0].delta.content or ""
+#         chat_display.markdown(f"<pre>{outputText}</pre>", unsafe_allow_html=True)
 
 # Input for income
 st.header("Income")
