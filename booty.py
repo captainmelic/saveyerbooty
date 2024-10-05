@@ -6,24 +6,28 @@ from groqpolly import callPolly
 st.title("Expense and Profit Tracker")
 
 #Polly chat
-st.header("Say hi to polly!")
+st.header("Say hi to Polly!")
 
 # Start displaying the text
-text_placeholder = st.empty()
+
 
 initialText = "Hello Polly! I am the Captain and I am in need of some assistance with me treasure."
+
+with st.sidebar:
+    st.subheader("Polly")
+    chat_display = st.empty()
 
 outputText = ""
 for chunk in callPolly(initialText):
     outputText += chunk.choices[0].delta.content or ""
-    text_placeholder.markdown(f"<pre>{outputText}</pre>", unsafe_allow_html=True)
+    chat_display.markdown(f"<pre>{outputText}</pre>", unsafe_allow_html=True)
 
 user_input = st.text_input("Enter your message to Polly:")
 
 outputText = ""
 for chunk in callPolly(user_input):
     outputText += chunk.choices[0].delta.content or ""
-    text_placeholder.markdown(f"<pre>{outputText}</pre>", unsafe_allow_html=True)
+    chat_display.markdown(f"<pre>{outputText}</pre>", unsafe_allow_html=True)
 
 # Input for income
 st.header("Income")
