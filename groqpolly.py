@@ -22,7 +22,7 @@ def callPolly(input):
         temperature=1,
         max_tokens=1024,
         top_p=1,
-        stream=True,
+        stream=False,
         stop=None,
     )
     return completion
