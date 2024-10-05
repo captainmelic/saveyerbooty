@@ -22,12 +22,13 @@ for chunk in callPolly(initialText):
     outputText += chunk.choices[0].delta.content or ""
     chat_display.markdown(f"<pre>{outputText}</pre>", unsafe_allow_html=True)
 
-user_input = st.text_input("Enter your message to Polly:")
+while True:
+    user_input = st.text_input("Enter your message to Polly:")
 
-outputText = ""
-for chunk in callPolly(user_input):
-    outputText += chunk.choices[0].delta.content or ""
-    chat_display.markdown(f"<pre>{outputText}</pre>", unsafe_allow_html=True)
+    outputText = ""
+    for chunk in callPolly(user_input):
+        outputText += chunk.choices[0].delta.content or ""
+        chat_display.markdown(f"<pre>{outputText}</pre>", unsafe_allow_html=True)
 
 # Input for income
 st.header("Income")
