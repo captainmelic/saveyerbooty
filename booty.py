@@ -16,14 +16,14 @@ initialText = "Hello Polly! I am the Captain and I am in need of some assistance
 outputText = ""
 for chunk in callPolly(initialText):
     outputText += chunk.choices[0].delta.content or ""
-    text_placeholder.text(outputText)
+    text_placeholder.text_area("Polly the Pirate Parrot", output_text, height=300 width=300)
 
 user_input = st.text_input("Enter your message to Polly:")
 
 outputText = ""
 for chunk in callPolly(user_input):
     outputText += chunk.choices[0].delta.content or ""
-    text_placeholder.text(outputText)
+    text_placeholder.text_area("Polly the Pirate Parrot", output_text, height=300 width=300)
 
 # Input for income
 st.header("Income")
