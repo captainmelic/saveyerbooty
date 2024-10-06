@@ -2,7 +2,7 @@
 import os
 from groq import Groq
 
-os.environ['GROQ_API_KEY'] = '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'
+os.environ['GROQ_API_KEY'] = ''
 
 client = Groq(api_key=os.getenv('GROQ_API_KEY'))
 
